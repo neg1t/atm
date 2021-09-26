@@ -1,0 +1,18 @@
+.conatiner {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.main_keypad {
+  display: grid;
+  grid-template-areas: "firstbutton secondbutton thirdbutton";
+  width: 200px;
+  gap: 5px;
+}
+
+.extra_keypad {
+  margin-left: 20px;
+  display: grid;
+  gap: 5px;
+}

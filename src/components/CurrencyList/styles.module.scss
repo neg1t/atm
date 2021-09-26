@@ -1,0 +1,7 @@
+.list_container {
+  display: grid;
+  grid-template-areas: 'left right';
+  gap: 10px;
+  width: 100px;
+  font-size: 22px;
+}
