@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useContext, useCallback, createContext, SetStateAction } from 'react'
+import React, { useState, useContext, createContext, SetStateAction } from 'react'
 import { IBills } from '~types/index'
+import { giveMoney } from '@utils/helper'
 import json from '../bills.json'
 
 interface IJsonBill {
@@ -7,38 +8,39 @@ interface IJsonBill {
   variants: IBills
 }
 
+interface IEnter {
+  message: string
+  currentBills: IBills
+  givenBills: IBills
+}
+
 export interface ContextProps {
   bill: {
+    value: string
+    keyClick: (val: string) => void
+    clear: () => void
+    enter: () => void
     billState: IBills
     setBillState: React.Dispatch<SetStateAction<IBills>>
     allVariants: IJsonBill[]
-  },
-  buttons: {
-    value: string
-    keyClick: (val: string) => React.Dispatch<SetStateAction<string>>
-    clear: React.Dispatch<SetStateAction<string>>
-    enter: () => IBills
   }
 }
 
 const AppContext = createContext<ContextProps>({
   bill: {
+    value: '',
     billState: {} as IBills,
     allVariants: [] as IJsonBill[],
-    setBillState: () => {/*empty */ }
-  },
-  buttons: {
-    value: '',
+    setBillState: () => {/*empty */ },
+    enter: () => ({} as IEnter),
     keyClick: () => () => {/*empty */ },
     clear: () => {/*empty */ },
-    enter: () => ({} as IBills)
   }
 })
 
 export const ProvideAppContext: React.FunctionComponent = ({ children }) => {
   const bill = useProvideBill()
-  const buttons = useProvideButtons()
-  return <AppContext.Provider value={{ bill, buttons }}>{children}</AppContext.Provider>
+  return <AppContext.Provider value={{ bill }}>{children}</AppContext.Provider>
 }
 
 export const useBill = () => {
@@ -46,24 +48,13 @@ export const useBill = () => {
   return bill
 }
 
-export const useButton = () => {
-  const { buttons } = useContext(AppContext)
-  return buttons
-}
-
 
 const useProvideBill = () => {
   const allVariants = [...json.bills]
+  const [value, setValue] = useState('')
   const [billState, setBillState] = useState<IBills>(allVariants[0].variants as IBills)
 
-  return { billState, setBillState, allVariants }
-}
-
-
-const useProvideButtons = () => {
-  const [value, setValue] = useState('')
-
-  const keyClick = (val: string) => () => {
+  const keyClick = (val: string) => {
     setValue(value + val)
   }
 
@@ -72,19 +63,11 @@ const useProvideButtons = () => {
   }
 
   const enter = () => {
-
+    const result = giveMoney(Number(value), billState)
+    setBillState(result.currentBills)
     clear()
-
-    return {
-      "5000": 10,
-      "2000": 10,
-      "1000": 10,
-      "500": 10,
-      "200": 10,
-      "100": 10,
-      "50": 10
-    }
+    return result
   }
 
-  return { value, keyClick, clear, enter }
+  return { billState, setBillState, allVariants, value, keyClick, clear, enter }
 }

@@ -1,4 +1,15 @@
-export const mainButtons = [
+export type TExtraValue = 'clear' | 'cancel' | 'enter' | ''
+
+interface IExtraButton {
+  value: TExtraValue
+  color: string
+}
+export interface IMainButton {
+  value: number | ''
+  extra: [] | string[]
+}
+
+export const mainButtons: IMainButton[] = [
   {
     value: 1,
     extra: ['Q', 'Z']
@@ -49,7 +60,7 @@ export const mainButtons = [
   },
 ]
 
-export const extraButtons = [
+export const extraButtons: IExtraButton[] = [
   {
     value: 'cancel',
     color: '#ff4545'
