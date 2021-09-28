@@ -1,0 +1,23 @@
+@import "@sass/colors.scss";
+@import "@sass/mixins.scss";
+
+.card {
+  width: fit-content;
+  padding: 0 10px;
+  user-select: none;
+  border-radius: 20px;
+  color: white;
+  background-color: $blue;
+  margin-bottom: 8px;
+  transition: 0.2s all;
+
+  &:hover {
+    @include default-box-shadow();
+    transition: 0.2s all;
+    cursor: pointer;
+  }
+
+  p {
+    margin: 12px 0;
+  }
+}

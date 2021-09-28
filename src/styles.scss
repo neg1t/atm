@@ -1,3 +1,13 @@
+@font-face {
+  font-family: "Stick";
+  src: url("./fonts/Stick.woff");
+}
+
+html {
+  font-family: Stick;
+  color: black;
+}
+
 body {
   background-color: black;
   font-size: 18px;

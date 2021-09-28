@@ -1,0 +1,7 @@
+@import '@sass/mixins.scss';
+
+.title {
+  @include rusfont(18px);
+  display: flex;
+  justify-content: center;
+}

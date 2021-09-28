@@ -3,7 +3,7 @@ import { IBills } from '~types/index'
 import { giveMoney } from '@utils/helper'
 import json from '../bills.json'
 
-interface IJsonBill {
+export interface IJsonBill {
   id: number
   variants: IBills
 }
@@ -64,7 +64,7 @@ const useProvideBill = () => {
 
   const enter = () => {
     const result = giveMoney(Number(value), billState)
-    setBillState(result.currentBills)
+    result.message === 'Деньги выданы' && setBillState(result.currentBills)
     clear()
     return result
   }
