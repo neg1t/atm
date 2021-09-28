@@ -8,7 +8,7 @@ export interface IJsonBill {
   variants: IBills
 }
 
-interface IEnter {
+export interface IEnter {
   message: string
   currentBills: IBills
   givenBills: IBills
@@ -17,9 +17,11 @@ interface IEnter {
 export interface ContextProps {
   bill: {
     value: string
-    keyClick: (val: string) => void
+    error: string
+    setError: React.Dispatch<SetStateAction<string>>
+    keyClick: (val: string, type: 'button' | 'input') => void
     clear: () => void
-    enter: () => void
+    enter: () => void | IEnter
     billState: IBills
     setBillState: React.Dispatch<SetStateAction<IBills>>
     allVariants: IJsonBill[]
@@ -29,8 +31,10 @@ export interface ContextProps {
 const AppContext = createContext<ContextProps>({
   bill: {
     value: '',
+    error: '',
     billState: {} as IBills,
     allVariants: [] as IJsonBill[],
+    setError: () => {/*empty */ },
     setBillState: () => {/*empty */ },
     enter: () => ({} as IEnter),
     keyClick: () => () => {/*empty */ },
@@ -52,10 +56,18 @@ export const useBill = () => {
 const useProvideBill = () => {
   const allVariants = [...json.bills]
   const [value, setValue] = useState('')
+  const [error, setError] = useState('')
   const [billState, setBillState] = useState<IBills>(allVariants[0].variants as IBills)
 
-  const keyClick = (val: string) => {
-    setValue(value + val)
+  const keyClick = (val: string, type: 'button' | 'input') => {
+    setError('')
+    if (value.length < 10) {
+      if (type === 'button') {
+        setValue(value + val)
+      } else {
+        setValue(val)
+      }
+    }
   }
 
   const clear = () => {
@@ -63,11 +75,15 @@ const useProvideBill = () => {
   }
 
   const enter = () => {
-    const result = giveMoney(Number(value), billState)
-    result.message === 'Деньги выданы' && setBillState(result.currentBills)
-    clear()
-    return result
+    if (Number(value) % 50 === 0 && value !== '') {
+      const result = giveMoney(Number(value), billState)
+      result.message === 'Деньги выданы' ? setBillState(result.currentBills) : setError(result.message)
+      clear()
+      return result
+    } else {
+      return setError('Введите число кратное 50')
+    }
   }
 
-  return { billState, setBillState, allVariants, value, keyClick, clear, enter }
+  return { billState, setBillState, allVariants, value, keyClick, clear, enter, error, setError }
 }

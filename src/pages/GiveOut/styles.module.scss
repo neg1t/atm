@@ -1,0 +1,17 @@
+@import '@sass/mixins.scss';
+
+.container {
+
+  .input_container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 200px;
+  }
+
+  .button {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+  }
+}

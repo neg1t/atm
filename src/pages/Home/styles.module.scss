@@ -33,11 +33,11 @@ $second-color: #12ffff;
 
 @keyframes neon {
   from {
-    text-shadow: 0 0 30px $first-color, 0 0 40px $first-color, 0 0 45px $first-color, 0 0 30px $second-color,
+    text-shadow:  0 0 25px $first-color, 0 0 36px $first-color, 0 0 30px $second-color,
       0 0 50px $second-color, 0 0 60px $second-color, 0 0 80px $second-color, 0 0 90px $second-color;
   }
   to {
-    text-shadow: 0 0 20px $first-color, 0 0 25px $first-color, 0 0 30px $first-color, 0 0 20px $second-color,
+    text-shadow: 0 0 35px $first-color, 0 0 45px $first-color, 0 0 20px $second-color,
       0 0 35px $second-color, 0 0 40px $second-color, 0 0 50px $second-color, 0 0 75px $second-color;
   }
 }

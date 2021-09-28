@@ -6,16 +6,6 @@ import { useHistory } from 'react-router-dom';
 import { useBill } from '@hooks/useContext'
 import { Title } from '@components/Title'
 
-const initialBills = {
-  "5000": 10,
-  "2000": 10,
-  "1000": 10,
-  "500": 10,
-  "200": 10,
-  "100": 10,
-  "50": 10
-}
-
 export const InfoPage: FC = () => {
 
   const history = useHistory()

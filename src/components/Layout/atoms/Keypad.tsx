@@ -13,16 +13,16 @@ export const Keypad: FC = () => {
   const history = useHistory()
 
   const mainClickHandler = (value: string) => {
-    // console.log(value)
-    keyClick(value)
+    keyClick(value, 'button')
   }
 
   const extraKeyClickHandler = (type: buttons.TExtraValue) => () => {
     if (type === 'clear') {
       clear()
     } else if (type === 'enter') {
-      const instance = enter()
-      console.log(instance)
+      const result = enter()
+      history.push('/give-out', {...result})
+      // console.log(result)
     } else {
       history.push('/')
     }

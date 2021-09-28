@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
 import styles from './styles.module.scss'
-import clsx from 'clsx'
 
 interface ITitle {
   text: string

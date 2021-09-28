@@ -1,0 +1,21 @@
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  
+  .input {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    border-bottom: 1px solid black;
+    text-align: center;
+    font-size: 50px;
+    font-family: Stick;
+  }
+
+  .error {
+    position: absolute;
+    color: rgb(228, 55, 55);
+    bottom: -25px;
+  }
+}
