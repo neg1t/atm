@@ -12,6 +12,8 @@ export interface IEnter {
   message: string
   currentBills: IBills
   givenBills: IBills
+  remain: number
+  issued: number
 }
 
 export interface ContextProps {
@@ -75,13 +77,13 @@ const useProvideBill = () => {
   }
 
   const enter = () => {
-    if (Number(value) % 50 === 0 && value !== '') {
+    if (value !== '' && Number(value) !== 0) {
       const result = giveMoney(Number(value), billState)
       result.message === 'Деньги выданы' ? setBillState(result.currentBills) : setError(result.message)
       clear()
       return result
     } else {
-      return setError('Введите число кратное 50')
+      return setError('Введите число отличное от нуля')
     }
   }
 

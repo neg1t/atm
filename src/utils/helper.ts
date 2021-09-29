@@ -32,20 +32,28 @@ export const giveMoney = (value: number, bills: IBills) => {
   const givenBills = {} as IBills
   const currentBills = { ...bills }
 
-  const result = { currentBills: {} as IBills, givenBills: {} as IBills, message: '' }
+  const result = { currentBills: {} as IBills, givenBills: {} as IBills, message: '', remain: 0, issued: 0 }
 
   let atmSumm = Object.entries(currentBills)
     .map((arr) => Number(arr[0]) * Number(arr[1]))
     .reduce((previousValue, currentValue) => previousValue + currentValue)
 
+  const remainValue: number = value % 50
+
   let outputMoney = 0
-  let leftValue = value
+  let leftValue: number
   const excludeBills = [0]
+
+  if (remainValue !== 0) {
+    leftValue = value - remainValue
+    result.remain = remainValue
+  } else {
+    leftValue = value
+  }
 
   if (atmSumm >= value) {
     while (atmSumm >= 50 && leftValue !== 0) {
       const max = getMax(currentBills)
-
       if (
         !(
           excludeBills.reduce((previous, current) => previous + current) ===
@@ -91,9 +99,10 @@ export const giveMoney = (value: number, bills: IBills) => {
     result.message = 'В банкомате нет такой суммы :('
   }
 
-  if (outputMoney === value) {
+  if (outputMoney === value - remainValue) {
     result.currentBills = currentBills
     result.givenBills = givenBills
+    result.issued = value - remainValue
     result.message = 'Деньги выданы'
     return result
   } else {

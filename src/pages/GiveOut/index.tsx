@@ -1,17 +1,21 @@
-import React, { FC } from "react"
+import React, { FC, useRef } from "react"
 import styles from './styles.module.scss'
 import { Title } from '@components/Title'
 import { NumberInput } from '@components/NumberInput'
 import { useBill, IEnter } from '@hooks/useContext';
 import { Button } from "@components/Button";
-import { CurrencyList } from '@components/CurrencyList/index';
 import { useHistory, useLocation } from 'react-router-dom';
+import { GiveOutResult } from "./atoms";
 
 export const GiveOutPage: FC = () => {
   const { keyClick, value, clear, error, enter, setError } = useBill()
   const [result, setResult] = React.useState<IEnter>({} as IEnter)
   const history = useHistory()
   const location = useLocation<IEnter>()
+
+  const timeRef: {
+    current: NodeJS.Timeout | null
+ } = useRef(null)
 
   React.useEffect(() => {
     clear()
@@ -22,28 +26,24 @@ export const GiveOutPage: FC = () => {
     if (location.state) {
       if (location.state.message === 'Деньги выданы') {
         setResult(location.state)
-        setTimeout(() => {
+        timeRef.current = setInterval(() => {
           history.push('/')
-        }, 3000)
+        }, 5000)
       }
     }
+    return () => clearInterval(timeRef.current  as NodeJS.Timeout)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location])
 
-  // React.useEffect(() => {
-  //   const result = enter()
-  // }, [enter])
-
-  const enterClickHandler = React.useCallback(() => {
+  const enterClickHandler = () => {
     const result = enter()
     if (result?.message === 'Деньги выданы') {
       setResult(result)
-      setTimeout(() => {
+      timeRef.current = setTimeout(() => {
         history.push('/')
-      }, 3000)
+      }, 5000)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enter])
+  }
 
   const changeHandler = (val: string) => {
     setError('')
@@ -54,11 +54,8 @@ export const GiveOutPage: FC = () => {
     <div className={styles.container}>
       <Title text='Выдача' />
       {result?.message
-        ?
-        <div>
-          <p>Вам Выдано:</p>
-          <CurrencyList bills={result?.givenBills} />
-        </div>
+        ? 
+        <GiveOutResult {...result}/>
         :
         <>
           <div className={styles.input_container}>
